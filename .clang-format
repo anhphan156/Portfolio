@@ -1,0 +1,14 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 250
+AllowShortFunctionsOnASingleLine: None
+
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveBitFields: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveMacros: Consecutive
+
+# AlignEscapedNewlines: LeftWithLastLine
+# AllowAllParametersOfDeclarationOnNextLine: false
+
+AlignArrayOfStructures: Right
