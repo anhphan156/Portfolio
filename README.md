@@ -13,4 +13,6 @@ Then, `make && make run`
 
 Building this requires emscripten installed. For NixOS, just hit `nix develop`. For others, please refer to enscripten website.
 
+Also, raylib needs to be recompiled for web assembly support.
+
 Then, `make web && emrun html/index.html`
