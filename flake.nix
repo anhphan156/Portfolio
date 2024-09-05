@@ -11,7 +11,6 @@
   in {
     devShells."${system}".default = pkgs.mkShell {
       packages = with pkgs; [
-        libxkbcommon
         raylib
         emscripten
       ];
