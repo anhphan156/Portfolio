@@ -19,7 +19,7 @@ web: LDFLAGS := -0 -lm ./dependencies/raylib/lib/libraylib.a -s USE_GLFW=3 --she
 web: CFLAGS := -DPLATFORM_WEB
 web: $(OBJS)
 	@mkdir -p html
-	$(CC) $(CFLAGS) -o html/index.html $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
+	$(CC) -o html/index.html $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
 
 $(EXECUTABLE): $(OBJS)
 	$(CC) -o $@ $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
