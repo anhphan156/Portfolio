@@ -15,7 +15,7 @@ EXECUTABLE = out
 all: $(EXECUTABLE)
 
 web: CC:=emcc
-web: LDFLAGS := -0 -lm ./dependencies/raylib/lib/libraylib.a -s USE_GLFW=3 --shell-file ./dependencies/raylib/src/minshell.html
+web: LDFLAGS := -0 -lm ./dependencies/lib/libraylib.a -s USE_GLFW=3 --shell-file ./minshell.html
 web: CFLAGS := -DPLATFORM_WEB
 web: $(OBJS)
 	@mkdir -p html
@@ -51,7 +51,3 @@ raylib:
 	emcc -o build/raudio.o -c ./dependencies/raylib/src/raudio.c -Os -Wall -DPLATFORM_WEB
 
 	emar rcs dependencies/raylib/lib/libraylib.a build/rcore.o build/rshapes.o build/rtextures.o build/rtext.o build/rmodels.o build/utils.o build/raudio.o
-
-emsdk:
-	./dependencies/emsdk/emsdk activate latest
-	source ./dependencies/emsdk/emsdk_env.sh
