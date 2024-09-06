@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "application.h"
 #include "ds/vec.h"
 #include "entity/manager.h"
 #include <stdio.h>
