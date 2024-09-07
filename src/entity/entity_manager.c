@@ -3,7 +3,14 @@
 #include "entity/entity.h"
 #include <stdlib.h>
 
-Entity *em_create(EntityManager *em) {
+void em_init(EntityManager *em) {
+    em->pending.head    = 0;
+    em->pending.length  = 0;
+    em->entities.head   = 0;
+    em->entities.length = 0;
+}
+
+Entity *em_create_entity(EntityManager *em) {
     Entity *e = malloc(sizeof(Entity));
     vec_push(&em->pending, e);
 

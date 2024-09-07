@@ -27,6 +27,7 @@ void am_load_assets(AssetManager *am) {
             i += 1;
         }
 
+        free(line_buffer);
         fclose(stream);
     }
 }

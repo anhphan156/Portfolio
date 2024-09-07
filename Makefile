@@ -10,17 +10,19 @@ SRCS := $(shell find $(SRC_DIR) -name '*.c')
 OBJS := $(SRCS:%.c=%.o)
 EXECUTABLE = out
 
-.PHONY: all clean web
+.PHONY: all clean web test
 
 all: $(EXECUTABLE)
 
 web: CC:=emcc
 web: LDFLAGS := -0 -lm ./dependencies/lib/libraylib.a -s FORCE_FILESYSTEM=1 -s USE_GLFW=3 --shell-file ./minshell.html --preload-file ./gamedata
 web: CFLAGS := -DPLATFORM_WEB
-
 web: $(OBJS)
 	@mkdir -p html
 	$(CC) -o html/index.html $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
+
+test: CFLAGS := -DTEST
+test: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJS)
 	$(CC) -o $@ $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
