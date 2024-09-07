@@ -1,5 +1,5 @@
-#ifndef MANAGER_H
-#define MANAGER_H
+#ifndef ENTITY_MANAGER_H
+#define ENTITY_MANAGER_H
 
 #include "ds/vec.h"
 #include "entity/entity.h"

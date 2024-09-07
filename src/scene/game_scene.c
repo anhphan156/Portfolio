@@ -1,10 +1,10 @@
 #include "scene/game_scene.h"
 #include "constant.h"
 #include "ds/linkedlist.h"
-#include "entity/manager.h"
 #include "raylib.h"
 #include "scene/scene.h"
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 void s_render();
@@ -13,6 +13,7 @@ void s_collision_detection();
 void s_integrate(float dt);
 void s_render_grid();
 
+Texture2D *textures;
 GameScene *game_scene;
 float      cd     = 0.0;
 float      offset = 0.0;
@@ -32,6 +33,21 @@ void game_scene_update() {
 
     BeginMode2D(game_scene->camera);
 
+    Rectangle source;
+    source.x      = 0.0;
+    source.y      = 0.0;
+    source.width  = 64.0;
+    source.height = 64.0;
+    Rectangle dest;
+    dest.x      = 0.0;
+    dest.y      = 64.0 * 15;
+    dest.width  = 128.0;
+    dest.height = 128.0;
+    Vector2 origin;
+    origin.x = 0.0;
+    origin.y = 0.0;
+    DrawTexturePro(textures[14], source, dest, origin, 0.0, WHITE);
+
     s_render();
 
     EndMode2D();
@@ -41,7 +57,9 @@ void game_scene_update() {
     EndDrawing();
 }
 
-GameScene *game_scene_init() {
+GameScene *game_scene_init(Texture2D *t) {
+    textures = t;
+
     game_scene = malloc(sizeof(GameScene));
 
     game_scene->scene_type = GAME_SCENE;

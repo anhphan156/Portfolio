@@ -1,6 +1,6 @@
 #include "application.h"
+#include "asset/asset_manager.h"
 #include "ds/vec.h"
-#include "entity/manager.h"
 #include <stdio.h>
 #include <stdlib.h>
 

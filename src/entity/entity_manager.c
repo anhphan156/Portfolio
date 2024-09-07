@@ -1,4 +1,4 @@
-#include "entity/manager.h"
+#include "entity/entity_manager.h"
 #include "ds/vec.h"
 #include "entity/entity.h"
 #include <stdlib.h>
