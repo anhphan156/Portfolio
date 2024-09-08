@@ -4,6 +4,7 @@
 #include "raylib.h"
 
 typedef struct {
+    Vector2 prev_position;
     Vector2 position;
     Vector2 velocity;
     float   angle;

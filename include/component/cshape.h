@@ -1,8 +1,9 @@
 #ifndef CSHAPE_H
 #define CSHAPE_H
 
+#include "raylib.h"
 typedef struct {
-    float r;
+    Vector2 half_box;
 } CShape;
 
 #endif
