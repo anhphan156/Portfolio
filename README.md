@@ -15,4 +15,4 @@ Building this requires emscripten installed. For NixOS, just hit `nix develop`. 
 
 Also, raylib needs to be recompiled for web assembly support.
 
-Then, `make web && emrun html/index.html`
+Then, `make web && emrun game`

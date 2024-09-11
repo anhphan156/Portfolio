@@ -15,20 +15,25 @@
 
 void s_collision_detection();
 void s_collision_resolution();
+void s_camera_movement();
 void s_player_movement();
 void s_player_animation();
 void s_integrate(float dt);
 void s_input();
+void s_reset_game();
 void s_animation_update();
 void s_render();
 void s_render_grid();
+void s_render_camera_trap();
 void s_render_bbox();
 
 Texture2D *textures;
 GameScene *game_scene;
 Entity    *player;
-int        cell_size     = 128;
-int        physics_debug = 0;
+int        cell_size      = 128;
+int        physics_debug  = 0;
+int        box_trap_start = 700;
+int        box_trap_range = 400;
 
 void game_scene_update() {
     em_update(&game_scene->em);
@@ -37,6 +42,7 @@ void game_scene_update() {
     s_player_movement();
     s_player_animation();
     s_integrate(GetFrameTime());
+    s_camera_movement();
     s_collision_detection();
 
     BeginDrawing();
@@ -46,6 +52,7 @@ void game_scene_update() {
 
     if (physics_debug) {
         s_render_grid();
+        s_render_camera_trap();
         s_render_bbox();
     } else {
         s_render();
@@ -93,6 +100,15 @@ void game_scene_destroy() {
 }
 
 void s_collision_detection() {
+
+    // check out of screen
+    if (player->transform.position.y < 0.0) {
+        player->transform.velocity.y *= -1.0;
+    } else if (player->transform.position.y > HEIGHT) {
+        s_reset_game();
+    }
+
+    // check player collision against very objects
     char collide_anything = 0;
     for (Node *i = game_scene->em.entities.head; i != 0; i = i->next) {
         Entity *e = (Entity *)i->data;
@@ -156,6 +172,23 @@ void s_collision_resolution() {
     }
 }
 
+void s_camera_movement() {
+    if (player == 0)
+        return;
+
+    float *x_pos = &player->transform.position.x;
+    float  x_vec = player->transform.velocity.x;
+
+    if (*x_pos < box_trap_start && x_vec <= 0) {
+        box_trap_start = *x_pos;
+    } else if (*x_pos > box_trap_start + box_trap_range && x_vec > 0) {
+        box_trap_start = (int)(*x_pos - box_trap_range);
+    }
+
+    game_scene->camera.target.x = box_trap_start;
+    game_scene->camera.offset.x = 700;
+}
+
 void s_player_movement() {
     char     input = player->input.input;
     Vector2 *vec   = &player->transform.velocity;
@@ -216,7 +249,7 @@ void s_input() {
         physics_debug ^= 1;
     }
     if (IsKeyPressed(KEY_TWO)) {
-        player->transform.position = (Vector2){300.0, 300.0};
+        s_reset_game();
     }
 
     if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
@@ -234,6 +267,12 @@ void s_input() {
     } else {
         player->input.input &= ~(1 << UP_KEY_BIT);
     }
+}
+
+void s_reset_game() {
+    box_trap_start              = 700;
+    game_scene->camera.target.x = box_trap_start;
+    player->transform.position  = (Vector2){300.0, 300.0};
 }
 
 void s_animation_update() {
@@ -298,6 +337,11 @@ void s_render_grid() {
     for (int i = 0; i <= count_y; i += 1) {
         DrawLine(0, i * cell_size - y_offet, WIDTH, i * cell_size - y_offet, RED);
     }
+}
+
+void s_render_camera_trap() {
+    DrawLineEx((Vector2){box_trap_start, 0}, (Vector2){box_trap_start, HEIGHT}, 10, GREEN);
+    DrawLineEx((Vector2){box_trap_start + box_trap_range, 0}, (Vector2){box_trap_start + box_trap_range, HEIGHT}, 10, GREEN);
 }
 
 void s_render_bbox() {
