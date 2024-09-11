@@ -18,8 +18,8 @@ web: CC:=emcc
 web: LDFLAGS := -0 -lm ./dependencies/lib/libraylib.a -s FORCE_FILESYSTEM=1 -s USE_GLFW=3 --shell-file ./minshell.html --preload-file ./gamedata
 web: CFLAGS := -DPLATFORM_WEB
 web: $(OBJS)
-	@mkdir -p html
-	$(CC) -o html/index.html $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
+	@mkdir -p game
+	$(CC) -o game/index.html $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
 
 test: CFLAGS := -DTEST
 test: $(EXECUTABLE)

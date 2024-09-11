@@ -39,7 +39,7 @@ if (ENVIRONMENT_IS_NODE) {
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: /tmp/tmp__0iwlcu.js
+// include: /tmp/tmpwt2tc7fm.js
 
   if (!Module.expectedDataFileDownloads) {
     Module.expectedDataFileDownloads = 0;
@@ -60,7 +60,7 @@ if (ENVIRONMENT_IS_NODE) {
         // web worker
         PACKAGE_PATH = encodeURIComponent(location.pathname.toString().substring(0, location.pathname.toString().lastIndexOf('/')) + '/');
       }
-      var PACKAGE_NAME = 'html/index.data';
+      var PACKAGE_NAME = 'game/index.data';
       var REMOTE_PACKAGE_BASE = 'index.data';
       if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
         Module['locateFile'] = Module['locateFilePackage'];
@@ -196,10 +196,10 @@ Module['FS_createPath']("/gamedata/assets", "megaman", true, true);
           var files = metadata['files'];
           for (var i = 0; i < files.length; ++i) {
             DataRequest.prototype.requests[files[i].filename].onload();
-          }          Module['removeRunDependency']('datafile_html/index.data');
+          }          Module['removeRunDependency']('datafile_game/index.data');
 
       };
-      Module['addRunDependency']('datafile_html/index.data');
+      Module['addRunDependency']('datafile_game/index.data');
 
       if (!Module.preloadResults) Module.preloadResults = {};
 
@@ -220,25 +220,25 @@ Module['FS_createPath']("/gamedata/assets", "megaman", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/gamedata/assets/animations/QuestionBlock.png", "start": 0, "end": 333}, {"filename": "/gamedata/assets/animations/coinspin.png", "start": 333, "end": 42202}, {"filename": "/gamedata/assets/animations/explosion.png", "start": 42202, "end": 52814}, {"filename": "/gamedata/assets/mario/BigBush.png", "start": 52814, "end": 61452}, {"filename": "/gamedata/assets/mario/BigCloud.png", "start": 61452, "end": 87340}, {"filename": "/gamedata/assets/mario/Busher.png", "start": 87340, "end": 94330}, {"filename": "/gamedata/assets/mario/Flagpole.png", "start": 94330, "end": 95335}, {"filename": "/gamedata/assets/mario/GoombaDeath.png", "start": 95335, "end": 99546}, {"filename": "/gamedata/assets/mario/GoombaWalk.png", "start": 99546, "end": 105665}, {"filename": "/gamedata/assets/mario/SmallBush.png", "start": 105665, "end": 111482}, {"filename": "/gamedata/assets/mario/SmallCloud.png", "start": 111482, "end": 117012}, {"filename": "/gamedata/assets/mario/SmallPipe.png", "start": 117012, "end": 123177}, {"filename": "/gamedata/assets/mario/TallPipe.png", "start": 123177, "end": 174405}, {"filename": "/gamedata/assets/mario/cloudsmall.png", "start": 174405, "end": 185090}, {"filename": "/gamedata/assets/mario/coin.png", "start": 185090, "end": 203827}, {"filename": "/gamedata/assets/mario/ground.png", "start": 203827, "end": 208327}, {"filename": "/gamedata/assets/mario/question.png", "start": 208327, "end": 209389}, {"filename": "/gamedata/assets/mario/question2.png", "start": 209389, "end": 213140}, {"filename": "/gamedata/assets/megaman/megaBuster.png", "start": 213140, "end": 215273}, {"filename": "/gamedata/assets/megaman/megaJump.png", "start": 215273, "end": 234693}, {"filename": "/gamedata/assets/megaman/megaRun.png", "start": 234693, "end": 274866}, {"filename": "/gamedata/assets/megaman/megaShot.png", "start": 274866, "end": 292919}, {"filename": "/gamedata/assets/megaman/megaSlit.png", "start": 292919, "end": 309863}, {"filename": "/gamedata/assets/megaman/megaStand.png", "start": 309863, "end": 323091}, {"filename": "/gamedata/level.data", "start": 323091, "end": 323532}, {"filename": "/gamedata/textures.data", "start": 323532, "end": 324509}], "remote_package_size": 324509});
+    loadPackage({"files": [{"filename": "/gamedata/assets/animations/QuestionBlock.png", "start": 0, "end": 333}, {"filename": "/gamedata/assets/animations/coinspin.png", "start": 333, "end": 42202}, {"filename": "/gamedata/assets/animations/explosion.png", "start": 42202, "end": 52814}, {"filename": "/gamedata/assets/mario/BigBush.png", "start": 52814, "end": 61452}, {"filename": "/gamedata/assets/mario/BigCloud.png", "start": 61452, "end": 87340}, {"filename": "/gamedata/assets/mario/Busher.png", "start": 87340, "end": 94330}, {"filename": "/gamedata/assets/mario/Flagpole.png", "start": 94330, "end": 95335}, {"filename": "/gamedata/assets/mario/GoombaDeath.png", "start": 95335, "end": 99546}, {"filename": "/gamedata/assets/mario/GoombaWalk.png", "start": 99546, "end": 105665}, {"filename": "/gamedata/assets/mario/SmallBush.png", "start": 105665, "end": 111482}, {"filename": "/gamedata/assets/mario/SmallCloud.png", "start": 111482, "end": 117012}, {"filename": "/gamedata/assets/mario/SmallPipe.png", "start": 117012, "end": 123177}, {"filename": "/gamedata/assets/mario/TallPipe.png", "start": 123177, "end": 174405}, {"filename": "/gamedata/assets/mario/cloudsmall.png", "start": 174405, "end": 185090}, {"filename": "/gamedata/assets/mario/coin.png", "start": 185090, "end": 203827}, {"filename": "/gamedata/assets/mario/ground.png", "start": 203827, "end": 208327}, {"filename": "/gamedata/assets/mario/question.png", "start": 208327, "end": 209389}, {"filename": "/gamedata/assets/mario/question2.png", "start": 209389, "end": 213140}, {"filename": "/gamedata/assets/megaman/megaBuster.png", "start": 213140, "end": 215273}, {"filename": "/gamedata/assets/megaman/megaJump.png", "start": 215273, "end": 234693}, {"filename": "/gamedata/assets/megaman/megaRun.png", "start": 234693, "end": 274866}, {"filename": "/gamedata/assets/megaman/megaShot.png", "start": 274866, "end": 292919}, {"filename": "/gamedata/assets/megaman/megaSlit.png", "start": 292919, "end": 309863}, {"filename": "/gamedata/assets/megaman/megaStand.png", "start": 309863, "end": 323091}, {"filename": "/gamedata/level.data", "start": 323091, "end": 323796}, {"filename": "/gamedata/textures.data", "start": 323796, "end": 324773}], "remote_package_size": 324773});
 
   })();
 
-// end include: /tmp/tmp__0iwlcu.js
-// include: /tmp/tmpxjj76pz_.js
+// end include: /tmp/tmpwt2tc7fm.js
+// include: /tmp/tmpsm7d5o3u.js
 
     // All the pre-js content up to here must remain later on, we need to run
     // it.
     if (Module['$ww'] || (typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD)) Module['preRun'] = [];
     var necessaryPreJSTasks = Module['preRun'].slice();
-  // end include: /tmp/tmpxjj76pz_.js
-// include: /tmp/tmpam_px5tw.js
+  // end include: /tmp/tmpsm7d5o3u.js
+// include: /tmp/tmp4w4evqhz.js
 
     if (!Module['preRun']) throw 'Module.preRun should exist because file support used it; did a pre-js delete it?';
     necessaryPreJSTasks.forEach((task) => {
       if (Module['preRun'].indexOf(task) < 0) throw 'All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?';
     });
-  // end include: /tmp/tmpam_px5tw.js
+  // end include: /tmp/tmp4w4evqhz.js
 
 
 // Sometimes an existing Module object exists with properties
