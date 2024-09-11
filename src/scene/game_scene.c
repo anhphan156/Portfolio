@@ -38,10 +38,9 @@ void game_scene_update() {
     s_player_animation();
     s_integrate(GetFrameTime());
     s_collision_detection();
-    s_collision_resolution();
 
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground((Color){30, 200, 240, 255});
 
     BeginMode2D(game_scene->camera);
 
@@ -84,7 +83,7 @@ GameScene *game_scene_init(Texture2D *t) {
     player->bbox.half_box                = (Vector2){cell_size / 2.5, cell_size / 2.5};
     player->bbox.enabled                 = 1;
     player->animation.animation_enabled  = 1;
-    player->animation.animation_duration = 20;
+    player->animation.animation_duration = 12;
 
     return game_scene;
 }
@@ -94,6 +93,7 @@ void game_scene_destroy() {
 }
 
 void s_collision_detection() {
+    char collide_anything = 0;
     for (Node *i = game_scene->em.entities.head; i != 0; i = i->next) {
         Entity *e = (Entity *)i->data;
         if (e == 0)
@@ -111,17 +111,17 @@ void s_collision_detection() {
 
         int collision = AABB_detection(player_pos, player_half_box, collider_pos, collider_half_box, &result->collision_axes, &result->overlapped_shape);
         if (collision == 1.0) {
+            collide_anything = 1;
+
             Vector2 player_prev_pos = player->transform.prev_position;
             AABB_detection(player_prev_pos, player_half_box, collider_pos, collider_half_box, &result->prev_collision_axes, NULL);
 
-            return;
+            s_collision_resolution();
+        } else {
+            collide_anything &= 1;
         }
     }
-
-    player->state.on_ground = 0;
-
-    player->bbox.collision_result.collision_axes      = (Vector2){0.0, 0.0};
-    player->bbox.collision_result.prev_collision_axes = (Vector2){0.0, 0.0};
+    player->state.on_ground = collide_anything;
 }
 
 void s_collision_resolution() {
@@ -139,18 +139,19 @@ void s_collision_resolution() {
     player_vec_dir.y = player_vec->y > 0.0 ? 1.0 : -1.0;
 
     if (collision_axes.x * collision_axes.y == 1.0) {
-        player->state.on_ground = 1;
 
-        if (collision_result.prev_collision_axes.x == 1.0) {
+        if (collision_result.prev_collision_axes.y == 1.0) {
+            player_pos->x -= collision_result.overlapped_shape.x * player_vec_dir.x;
+        } else if (collision_result.prev_collision_axes.x == 1.0) {
             player_pos->y -= collision_result.overlapped_shape.y * player_vec_dir.y;
 
             if (player_vec_dir.y == -1.0) {
                 // player falling down when hitting their head
                 player_vec->y *= -0.8;
             }
-
-        } else if (collision_result.prev_collision_axes.y == 1.0) {
-            player_pos->x -= collision_result.overlapped_shape.x * player_vec_dir.x;
+            if (player_vec_dir.y == 1.0) {
+                player->state.on_ground = 1;
+            }
         }
     }
 }
@@ -159,18 +160,18 @@ void s_player_movement() {
     char     input = player->input.input;
     Vector2 *vec   = &player->transform.velocity;
     if (input & (1 << LEFT_KEY_BIT)) {
-        vec->x = -200.0;
+        vec->x = -350.0;
     } else if (input & (1 << RIGHT_KEY_BIT)) {
-        vec->x = 200.0;
+        vec->x = 350.0;
     } else {
         vec->x = 0.0;
     }
 
     if (input & (1 << UP_KEY_BIT) && player->state.on_ground == 1) {
-        vec->y = -1500.0;
+        vec->y = -2000.0;
     } else {
-        vec->y += 15.0;
-        vec->y = fmin(700.0, vec->y);
+        vec->y += 3000.0 * GetFrameTime();
+        vec->y = fmin(1000.0, vec->y);
     }
 }
 

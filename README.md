@@ -1,5 +1,5 @@
 # Web Portfolio
-A portfolio website made using C & raylib and compiled with enscripten.
+A web game made using C & raylib and compiled with enscripten.
 
 ## Build Instructions
 
