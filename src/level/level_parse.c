@@ -26,15 +26,16 @@ void level_parser(const char *level_name, EntityManager *em, int *cell_size) {
     float half_cell_size = *cell_size / 2.0;
     int   y_offset       = HEIGHT % *cell_size * 2;
 
-    int texture_id = NO_TEXTURE, x = 0, y = 0, collision_enabled = 0;
+    int   texture_id = NO_TEXTURE, x = 0, y = 0, collision_enabled = 0;
+    float draw_w = 1.0, draw_h = 1.0, bb_w = 1.0, bb_h = 1.0;
     while ((read = getline(&line_buffer, &len, stream)) != -1) {
-        sscanf(line_buffer, "%d %d %d %d", &texture_id, &x, &y, &collision_enabled);
+        sscanf(line_buffer, "%d %d %d %f %f %f %f %d", &texture_id, &x, &y, &draw_w, &draw_h, &bb_w, &bb_h, &collision_enabled);
 
         Entity *e               = em_create_entity(em);
         e->transform.position.x = *cell_size * x + half_cell_size;
         e->transform.position.y = HEIGHT - y * *cell_size - y_offset + half_cell_size;
-        e->shape.half_box       = (Vector2){half_cell_size, half_cell_size};
-        e->bbox.half_box        = (Vector2){half_cell_size, half_cell_size};
+        e->shape.half_box       = (Vector2){half_cell_size * draw_w, half_cell_size * draw_h};
+        e->bbox.half_box        = (Vector2){half_cell_size * bb_w, half_cell_size * bb_h};
         e->bbox.enabled         = collision_enabled;
         e->texture.id           = texture_id;
     }

@@ -22,8 +22,18 @@ void am_load_assets(AssetManager *am) {
 
         int i = 0;
         while ((read = getline(&line_buffer, &len, stream)) != -1) {
-            line_buffer[read - 1] = 0;
-            am->assets[i]         = LoadTexture(line_buffer);
+
+            char texture_name[read];
+            int  animation_frame_count_x = 1;
+            int  animation_frame_count_y = 1;
+            sscanf(line_buffer, "%d %d %s", &animation_frame_count_x, &animation_frame_count_y, texture_name);
+
+            am->assets[i]                         = LoadTexture(texture_name);
+            am->assets[i].animation_width         = am->assets[i].width / animation_frame_count_x;
+            am->assets[i].animation_height        = am->assets[i].height / animation_frame_count_y;
+            am->assets[i].animation_frame_count_x = animation_frame_count_x;
+            am->assets[i].animation_frame_count_y = animation_frame_count_y;
+
             i += 1;
         }
 

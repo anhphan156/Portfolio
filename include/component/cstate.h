@@ -3,6 +3,7 @@
 
 typedef struct {
     char on_ground;
+    char dir;
 } CState;
 
 #endif

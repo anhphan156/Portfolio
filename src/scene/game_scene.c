@@ -1,4 +1,5 @@
 #include "scene/game_scene.h"
+#include "component/canimation.h"
 #include "component/cbbox.h"
 #include "component/ctexture.h"
 #include "constant.h"
@@ -15,8 +16,10 @@
 void s_collision_detection();
 void s_collision_resolution();
 void s_player_movement();
+void s_player_animation();
 void s_integrate(float dt);
 void s_input();
+void s_animation_update();
 void s_render();
 void s_render_grid();
 void s_render_bbox();
@@ -29,8 +32,10 @@ int        physics_debug = 0;
 
 void game_scene_update() {
     em_update(&game_scene->em);
+    s_animation_update();
     s_input();
     s_player_movement();
+    s_player_animation();
     s_integrate(GetFrameTime());
     s_collision_detection();
     s_collision_resolution();
@@ -69,15 +74,17 @@ GameScene *game_scene_init(Texture2D *t) {
     level_parser("gamedata/level.data", &game_scene->em, &cell_size);
 
     // spawn player
-    player                       = em_create_entity(&game_scene->em);
-    player->transform.position.x = 300.0;
-    player->transform.position.y = 300.0;
-    player->transform.velocity.x = 0.0;
-    player->transform.velocity.y = 300.0;
-    player->texture.id           = 0;
-    player->shape.half_box       = (Vector2){cell_size / 2.0, cell_size / 2.0};
-    player->bbox.half_box        = (Vector2){cell_size / 2.0, cell_size / 2.0};
-    player->bbox.enabled         = 1;
+    player                               = em_create_entity(&game_scene->em);
+    player->transform.position.x         = 300.0;
+    player->transform.position.y         = 300.0;
+    player->transform.velocity.x         = 0.0;
+    player->transform.velocity.y         = 300.0;
+    player->texture.id                   = 1;
+    player->shape.half_box               = (Vector2){cell_size / 2.0, cell_size / 2.0};
+    player->bbox.half_box                = (Vector2){cell_size / 2.5, cell_size / 2.5};
+    player->bbox.enabled                 = 1;
+    player->animation.animation_enabled  = 1;
+    player->animation.animation_duration = 20;
 
     return game_scene;
 }
@@ -167,6 +174,23 @@ void s_player_movement() {
     }
 }
 
+void s_player_animation() {
+    char input = player->input.input;
+    if (input & (1 << LEFT_KEY_BIT)) {
+        player->texture.id = 1;
+        player->state.dir  = -1;
+    } else if (input & (1 << RIGHT_KEY_BIT)) {
+        player->texture.id = 1;
+        player->state.dir  = 1;
+    } else {
+        player->texture.id = 0;
+    }
+
+    if (player->state.on_ground == 0) {
+        player->texture.id = 2;
+    }
+}
+
 void s_integrate(float dt) {
     for (Node *i = game_scene->em.entities.head; i != 0; i = i->next) {
         Entity *e = (Entity *)i->data;
@@ -211,6 +235,20 @@ void s_input() {
     }
 }
 
+void s_animation_update() {
+    for (Node *i = game_scene->em.entities.head; i != 0; i = i->next) {
+        Entity *e = (Entity *)i->data;
+        if (e == 0)
+            continue;
+        if (e->is_alive == 0 || e->animation.animation_enabled == 0)
+            continue;
+
+        CAnimation *animation = &e->animation;
+        animation->animation_live_frame += 1;
+        animation->current_animation_frame = animation->animation_live_frame / animation->animation_duration;
+    }
+}
+
 void s_render() {
     for (Node *i = game_scene->em.entities.head; i != 0; i = i->next) {
         Entity *e = (Entity *)i->data;
@@ -231,8 +269,12 @@ void s_render() {
             Rectangle source;
             source.x      = 0.0;
             source.y      = 0.0;
-            source.width  = textures[texture_id].width;
-            source.height = textures[texture_id].height;
+            source.width  = textures[texture_id].animation_width * e->state.dir;
+            source.height = textures[texture_id].animation_height;
+
+            if (e->animation.animation_enabled)
+                source.x = e->animation.current_animation_frame % textures[texture_id].animation_frame_count_x * textures[texture_id].animation_width;
+
             Rectangle dest;
             dest.x      = pos.x;
             dest.y      = pos.y;

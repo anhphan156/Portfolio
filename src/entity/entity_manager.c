@@ -21,13 +21,20 @@ Entity *em_create_entity(EntityManager *em) {
     e->transform.velocity.y      = 0.0;
     e->transform.angle           = 0.0;
 
-    e->texture.id      = -1;
-    e->input.input     = 0;
-    e->state.on_ground = false;
+    e->animation.animation_enabled       = 0;
+    e->animation.current_animation_frame = 0;
+    e->animation.animation_live_frame    = 0;
+    e->animation.animation_duration      = 0;
 
+    e->state.on_ground = 0;
+    e->state.dir       = 1;
+
+    e->texture.id     = -1;
+    e->input.input    = 0;
     e->shape.half_box = (Vector2){0.0, 0.0};
-    e->bbox.enabled   = 0;
-    e->bbox.half_box  = (Vector2){0.0, 0.0};
+
+    e->bbox.enabled  = 0;
+    e->bbox.half_box = (Vector2){0.0, 0.0};
 
     e->bbox.collision_result.collision_axes      = (Vector2){0.0, 0.0};
     e->bbox.collision_result.prev_collision_axes = (Vector2){0.0, 0.0};

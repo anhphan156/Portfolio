@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "component/canimation.h"
 #include "component/cbbox.h"
 #include "component/cinput.h"
 #include "component/cshape.h"
@@ -15,6 +16,7 @@ typedef struct {
     CBBox      bbox;
     CInput     input;
     CState     state;
+    CAnimation animation;
     int        is_alive;
 } Entity;
 

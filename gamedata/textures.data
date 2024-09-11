@@ -1,25 +1,25 @@
 24
-gamedata/assets/megaman/megaStand.png
-gamedata/assets/megaman/megaRun.png
-gamedata/assets/megaman/megaJump.png
-gamedata/assets/megaman/megaShot.png
-gamedata/assets/megaman/megaBuster.png
-gamedata/assets/megaman/megaSlit.png
-gamedata/assets/mario/BigBush.png
-gamedata/assets/mario/BigCloud.png
-gamedata/assets/mario/Busher.png
-gamedata/assets/mario/cloudsmall.png
-gamedata/assets/mario/coin.png
-gamedata/assets/mario/Flagpole.png
-gamedata/assets/mario/GoombaDeath.png
-gamedata/assets/mario/GoombaWalk.png
-gamedata/assets/mario/ground.png
-gamedata/assets/mario/question2.png
-gamedata/assets/mario/question.png
-gamedata/assets/mario/SmallBush.png
-gamedata/assets/mario/SmallCloud.png
-gamedata/assets/mario/SmallPipe.png
-gamedata/assets/mario/TallPipe.png
-gamedata/assets/animations/coinspin.png
-gamedata/assets/animations/explosion.png
-gamedata/assets/animations/QuestionBlock.png
+1 1 gamedata/assets/megaman/megaStand.png
+3 1 gamedata/assets/megaman/megaRun.png
+1 1 gamedata/assets/megaman/megaJump.png
+1 1 gamedata/assets/megaman/megaShot.png
+1 1 gamedata/assets/megaman/megaBuster.png
+1 1 gamedata/assets/megaman/megaSlit.png
+1 1 gamedata/assets/mario/BigBush.png
+1 1 gamedata/assets/mario/BigCloud.png
+1 1 gamedata/assets/mario/Busher.png
+1 1 gamedata/assets/mario/cloudsmall.png
+1 1 gamedata/assets/mario/coin.png
+1 1 gamedata/assets/mario/Flagpole.png
+1 1 gamedata/assets/mario/GoombaDeath.png
+1 1 gamedata/assets/mario/GoombaWalk.png
+1 1 gamedata/assets/mario/ground.png
+1 1 gamedata/assets/mario/question2.png
+1 1 gamedata/assets/mario/question.png
+1 1 gamedata/assets/mario/SmallBush.png
+1 1 gamedata/assets/mario/SmallCloud.png
+1 1 gamedata/assets/mario/SmallPipe.png
+1 1 gamedata/assets/mario/TallPipe.png
+1 1 gamedata/assets/animations/coinspin.png
+1 1 gamedata/assets/animations/explosion.png
+1 1 gamedata/assets/animations/QuestionBlock.png
