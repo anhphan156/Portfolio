@@ -1,5 +1,5 @@
 # Web Mario
-A web game made using C & raylib and compiled with enscripten. Click [here](https://anhphan156.github.io/WebMario/game/) to try.
+A web game made using C & raylib. Click [here](https://anhphan156.github.io/WebMario/game/) to try.
 
 ## Build Instructions
 
