@@ -102,7 +102,8 @@ void game_scene_destroy() {
 void s_collision_detection() {
 
     // check out of screen
-    if (player->transform.position.y < 0.0) {
+    float threshold = 0.0;
+    if (player->transform.position.y < threshold) {
         player->transform.velocity.y *= -1.0;
     } else if (player->transform.position.y > HEIGHT) {
         s_reset_game();
@@ -127,16 +128,20 @@ void s_collision_detection() {
 
         int collision = AABB_detection(player_pos, player_half_box, collider_pos, collider_half_box, &result->collision_axes, &result->overlapped_shape);
         if (collision == 1.0) {
-            collide_anything = 1;
 
             Vector2 player_prev_pos = player->transform.prev_position;
             AABB_detection(player_prev_pos, player_half_box, collider_pos, collider_half_box, &result->prev_collision_axes, NULL);
+
+            if (result->prev_collision_axes.y == 0) {
+                collide_anything = 1;
+            }
 
             s_collision_resolution();
         } else {
             collide_anything &= 1;
         }
     }
+
     player->state.on_ground = collide_anything;
 }
 
@@ -165,9 +170,6 @@ void s_collision_resolution() {
                 // player falling down when hitting their head
                 player_vec->y *= -0.8;
             }
-            if (player_vec_dir.y == 1.0) {
-                player->state.on_ground = 1;
-            }
         }
     }
 }
@@ -187,6 +189,9 @@ void s_camera_movement() {
 
     game_scene->camera.target.x = box_trap_start;
     game_scene->camera.offset.x = 700;
+#ifdef PLATFORM_WEB
+    game_scene->camera.offset.y = (GetRenderHeight() - HEIGHT) + 62;
+#endif
 }
 
 void s_player_movement() {
@@ -201,9 +206,9 @@ void s_player_movement() {
     }
 
     if (input & (1 << UP_KEY_BIT) && player->state.on_ground == 1) {
-        vec->y = -2000.0;
+        vec->y = -1500.0;
     } else {
-        vec->y += 3000.0 * GetFrameTime();
+        vec->y += 2500.0 * GetFrameTime();
         vec->y = fmin(1000.0, vec->y);
     }
 }

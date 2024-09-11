@@ -3,18 +3,29 @@
 #include "constant.h"
 #include "scene/game_scene.h"
 #include <raylib.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #if defined(PLATFORM_WEB)
 #include <emscripten/emscripten.h>
+#include <emscripten/html5.h>
+
+#include <stdio.h>
+EM_BOOL uievent_callback(int eventType, const EmscriptenUiEvent *e, void *userData) {
+    SetWindowSize(e->windowInnerWidth, e->windowInnerHeight);
+    return 0;
+}
 #endif
 
 AssetManager *am;
 
 void app_init() {
-    InitWindow(WIDTH, HEIGHT, "Web");
+#if defined(PLATFORM_WEB)
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    emscripten_set_resize_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, uievent_callback);
+#endif
+    InitWindow(WIDTH, HEIGHT, "Web Mario");
     SetTargetFPS(60);
-    SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     am = malloc(sizeof(AssetManager));
     am_load_assets(am);
