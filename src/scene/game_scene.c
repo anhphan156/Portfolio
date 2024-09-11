@@ -257,17 +257,24 @@ void s_input() {
         s_reset_game();
     }
 
-    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
+    char mouse_movement_right = 0;
+    char mouse_movement_left  = 0;
+    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+        mouse_movement_right = GetMouseX() >= GetRenderWidth() * 2 / 3;
+        mouse_movement_left  = GetMouseX() < GetRenderWidth() / 3;
+    }
+
+    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) || mouse_movement_left) {
         player->input.input |= 1 << LEFT_KEY_BIT;
     } else {
         player->input.input &= ~(1 << LEFT_KEY_BIT);
     }
-    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
+    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) || mouse_movement_right) {
         player->input.input |= 1 << RIGHT_KEY_BIT;
     } else {
         player->input.input &= ~(1 << RIGHT_KEY_BIT);
     }
-    if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) {
+    if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP) || IsGestureDetected(GESTURE_SWIPE_UP)) {
         player->input.input |= (1 << UP_KEY_BIT);
     } else {
         player->input.input &= ~(1 << UP_KEY_BIT);
