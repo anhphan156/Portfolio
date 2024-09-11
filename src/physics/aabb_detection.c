@@ -8,10 +8,14 @@ int AABB_detection(Vector2 a_pos, Vector2 a_half_box, Vector2 b_pos, Vector2 b_h
     float ox = a_half_box.x + b_half_box.x;
     float oy = a_half_box.y + b_half_box.y;
 
-    axes->x = ox > dx ? 1.0 : 0.0;
-    axes->y = oy > dy ? 1.0 : 0.0;
-    area->x = ox - dx;
-    area->y = oy - dy;
+    if (axes != 0) {
+        axes->x = ox > dx ? 1.0 : 0.0;
+        axes->y = oy > dy ? 1.0 : 0.0;
+    }
+    if (area != 0) {
+        area->x = ox - dx;
+        area->y = oy - dy;
+    }
 
     return axes->x * axes->y;
 }

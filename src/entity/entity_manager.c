@@ -21,8 +21,9 @@ Entity *em_create_entity(EntityManager *em) {
     e->transform.velocity.y      = 0.0;
     e->transform.angle           = 0.0;
 
-    e->texture.id  = -1;
-    e->input.input = 0;
+    e->texture.id      = -1;
+    e->input.input     = 0;
+    e->state.on_ground = false;
 
     e->shape.half_box = (Vector2){0.0, 0.0};
     e->bbox.enabled   = 0;

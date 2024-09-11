@@ -13,7 +13,7 @@ AssetManager *am;
 
 void app_init() {
     InitWindow(WIDTH, HEIGHT, "Web");
-    SetTargetFPS(60);
+    SetTargetFPS(120);
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     am = malloc(sizeof(AssetManager));

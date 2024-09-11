@@ -8,9 +8,12 @@
 #include "physics/aabb_detection.h"
 #include "raylib.h"
 #include "scene/scene.h"
+#include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 void s_collision_detection();
+void s_collision_resolution();
 void s_player_movement();
 void s_integrate(float dt);
 void s_input();
@@ -21,27 +24,24 @@ void s_render_bbox();
 Texture2D *textures;
 GameScene *game_scene;
 Entity    *player;
-float      cd            = 0.0;
-float      offset        = 0.0;
 int        cell_size     = 128;
 int        physics_debug = 0;
 
 void game_scene_update() {
-    offset += .005;
-
     em_update(&game_scene->em);
     s_input();
     s_player_movement();
-    s_collision_detection();
     s_integrate(GetFrameTime());
+    s_collision_detection();
+    s_collision_resolution();
 
     BeginDrawing();
     ClearBackground(BLACK);
 
     BeginMode2D(game_scene->camera);
 
-    s_render_grid();
     if (physics_debug) {
+        s_render_grid();
         s_render_bbox();
     } else {
         s_render();
@@ -104,23 +104,66 @@ void s_collision_detection() {
 
         int collision = AABB_detection(player_pos, player_half_box, collider_pos, collider_half_box, &result->collision_axes, &result->overlapped_shape);
         if (collision == 1.0) {
-            player->transform.velocity.y = 0.0;
-            break;
-        } else {
-            result->collision_axes       = (Vector2){0.0, 0.0};
-            player->transform.velocity.y = 300.0;
+            Vector2 player_prev_pos = player->transform.prev_position;
+            AABB_detection(player_prev_pos, player_half_box, collider_pos, collider_half_box, &result->prev_collision_axes, NULL);
+
+            return;
+        }
+    }
+
+    player->state.on_ground = 0;
+
+    player->bbox.collision_result.collision_axes      = (Vector2){0.0, 0.0};
+    player->bbox.collision_result.prev_collision_axes = (Vector2){0.0, 0.0};
+}
+
+void s_collision_resolution() {
+    if (!player)
+        return;
+
+    Vector2 collision_axes = player->bbox.collision_result.collision_axes;
+
+    Vector2   *player_pos       = &player->transform.position;
+    Vector2   *player_vec       = &player->transform.velocity;
+    AABBResult collision_result = player->bbox.collision_result;
+
+    Vector2 player_vec_dir;
+    player_vec_dir.x = player_vec->x > 0.0 ? 1.0 : -1.0;
+    player_vec_dir.y = player_vec->y > 0.0 ? 1.0 : -1.0;
+
+    if (collision_axes.x * collision_axes.y == 1.0) {
+        player->state.on_ground = 1;
+
+        if (collision_result.prev_collision_axes.x == 1.0) {
+            player_pos->y -= collision_result.overlapped_shape.y * player_vec_dir.y;
+
+            if (player_vec_dir.y == -1.0) {
+                // player falling down when hitting their head
+                player_vec->y *= -0.8;
+            }
+
+        } else if (collision_result.prev_collision_axes.y == 1.0) {
+            player_pos->x -= collision_result.overlapped_shape.x * player_vec_dir.x;
         }
     }
 }
+
 void s_player_movement() {
     char     input = player->input.input;
     Vector2 *vec   = &player->transform.velocity;
-    if (input & (1 << 4)) {
+    if (input & (1 << LEFT_KEY_BIT)) {
         vec->x = -200.0;
-    } else if (input & 1) {
+    } else if (input & (1 << RIGHT_KEY_BIT)) {
         vec->x = 200.0;
     } else {
         vec->x = 0.0;
+    }
+
+    if (input & (1 << UP_KEY_BIT) && player->state.on_ground == 1) {
+        vec->y = -1500.0;
+    } else {
+        vec->y += 15.0;
+        vec->y = fmin(700.0, vec->y);
     }
 }
 
@@ -151,15 +194,20 @@ void s_input() {
         player->transform.position = (Vector2){300.0, 300.0};
     }
 
-    if (IsKeyDown(KEY_A)) {
-        player->input.input |= 1 << 4;
+    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
+        player->input.input |= 1 << LEFT_KEY_BIT;
     } else {
-        player->input.input &= ~(1 << 4);
+        player->input.input &= ~(1 << LEFT_KEY_BIT);
     }
-    if (IsKeyDown(KEY_D)) {
-        player->input.input |= 1;
+    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
+        player->input.input |= 1 << RIGHT_KEY_BIT;
     } else {
-        player->input.input &= ~1;
+        player->input.input &= ~(1 << RIGHT_KEY_BIT);
+    }
+    if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) {
+        player->input.input |= (1 << UP_KEY_BIT);
+    } else {
+        player->input.input &= ~(1 << UP_KEY_BIT);
     }
 }
 
