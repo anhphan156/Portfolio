@@ -2,5 +2,4 @@ dependencies/raylib
 .direnv/*
 build
 out
-html/
 leak.txt
