@@ -1,4 +1,4 @@
-# Web Portfolio
+# Web Mario
 A web game made using C & raylib and compiled with enscripten.
 
 ## Build Instructions
